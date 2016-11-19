@@ -67,12 +67,12 @@ var readCommand = function(message) {
   if (message) {
     if (message.text !== undefined) {
       if (message.text === '/start') {
-        api.sendMessage({ chat_id: message.chat.id, text: 'yo' }, function (err, message) {
+        api.sendMessage({ chat_id: message.chat.id, text: 'All that is gold does not glitter, not all those wo wander are lost!' }, function (err, message) {
           if (err) {
             console.log(err);
           }
         });
-      } else if (message.text.startsWith('/mumble')) {
+      } else if (message.text.startsWith('/gemumble')) {
         console.log('client ready?'+mumbleClient.ready);
         if (mumbleClient.ready) {
           postConnectedUsersMessage(message.chat.id);
