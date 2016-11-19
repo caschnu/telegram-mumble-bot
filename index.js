@@ -163,9 +163,9 @@ var onUserDisconnected = function(userDisconnected) {
 var onError = function (error) {
   console.log('Mumble error:');
   console.log(error);
-  // api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: 'ERROR: ' + error }, function (err, message) {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
+   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: 'ERROR: ' + error }, function (err, message) {
+     if (err) {
+       console.log(err);
+     }
+   });
 };
