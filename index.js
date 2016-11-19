@@ -72,7 +72,7 @@ var readCommand = function(message) {
             console.log(err);
           }
         });
-      } else if (message.text.startsWith('/gemumble@gemumble_bot' || message.text.startsWith("/gemumble")) {
+      } else if (message.text.startsWith('/gemumble@gemumble_bot')) {
         console.log('client ready?'+mumbleClient.ready);
         if (mumbleClient.ready) {
           postConnectedUsersMessage(message.chat.id);
