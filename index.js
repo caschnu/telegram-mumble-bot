@@ -5,6 +5,7 @@ var TelegramBot = require('telegrambot');
 var Mumble = require('mumble');
 var http = require('http');
 var fs = require('fs');
+var botname = 'gemumble_bot'
 
 // TELEGRAM SETUP
 var api = new TelegramBot(config.TELEGRAM_TOKEN);
@@ -99,9 +100,11 @@ var readCommand = function(message) {
 };
 
 var postConnectedUsersMessage = function(chatId) {
-  var responseText = 'Es sind ' + usersList.length + ' WG-Mitglieder anwesend:\n';
+  var responseText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder anwesend:\n';
   usersList.forEach(function(user) {
-    responseText += user.name + '\n';
+	if (user.name !== botname) {
+      responseText += user.name + '\n';
+    }
   });
   api.sendMessage({ chat_id: chatId, text: responseText }, function (err, message) {
     if (err) {
@@ -125,7 +128,7 @@ var onUserConnected = function(user) {
   usersList.forEach(function(user) {
     console.log(user.name + '\n');
   });
-  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt ' + (usersList.length -1) + ' WG-Mitglieder online!';
+  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
@@ -142,7 +145,7 @@ var onUserDisconnected = function(userDisconnected) {
   usersList.forEach(function(user) {
     console.log(user.name);
   });
-  var messageText = userDisconnected.name + ' ist jetzt offline!\n' + 'Es sind jetzt ' + (usersList.length -1) + ' WG-Mitglieder online!';
+  var messageText = userDisconnected.name + ' ist jetzt offline!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
