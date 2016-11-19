@@ -89,7 +89,12 @@ var readCommand = function(message) {
             console.log(err);
           }
         });
-      }
+      } else if (message.text === '/help@gemumble_bot') {
+      api.sendMessage({ chat_id: message.chat.id, text: 'Der gemumble-bot verrät sowohl die Zugangsdaten zum pp-mumble als auch die Nutzernamen der verfügbaren WG-Mitglieder. Originally written by yagop, forked & modified by @willowfield and uploaded with love <3' }, function (err, message) {
+          if (err) {
+            console.log(err);
+          }
+        });
     } else {
       console.log('Message text missing');
     }
