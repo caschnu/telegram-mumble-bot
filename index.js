@@ -126,7 +126,7 @@ var onUserConnected = function(user) {
     console.log(user.name + '\n');
   });
   var messageText = user.name + ' ist jetzt online!';
-  api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: messageText }, function (err, message) {
+  api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
     }
@@ -143,7 +143,7 @@ var onUserDisconnected = function(userDisconnected) {
     console.log(user.name);
   });
   var messageText = userDisconnected.name + ' ist jetzt offline!';
-  api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: messageText }, function (err, message) {
+  api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
     }
@@ -153,7 +153,7 @@ var onUserDisconnected = function(userDisconnected) {
  var onMessage = function (message, user) {
   console.log('Mumble message received');
   console.log(user.name + ' : ' + message);
-  api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: user.name + ' : ' + message }, function (err, message) {
+  api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: user.name + ' : ' + message }, function (err, message) {
     if (err) {
       console.log(err);
     }
