@@ -72,7 +72,7 @@ var readCommand = function(message) {
             console.log(err);
           }
         });
-      } else if (message.text.startsWith('/gemumble')) {
+      } else if (message.text.startsWith('/gemumble@gemumble_bot' || message.text.startsWith("/gemumble")) {
         console.log('client ready?'+mumbleClient.ready);
         if (mumbleClient.ready) {
           postConnectedUsersMessage(message.chat.id);
@@ -83,7 +83,7 @@ var readCommand = function(message) {
             console.log(err);
           }
         });
-      } else if (message.text === '/help') {
+      } else if (message.text === '/help@gemumble_bot') {
       api.sendMessage({ chat_id: message.chat.id, text: 'Der gemumble-bot verrät sowohl die Zugangsdaten zum pp-mumble als auch die Nutzernamen der verfügbaren WG-Mitglieder. Originally written by yagop, forked & modified by @willowfield and uploaded with love <3' }, function (err, message) {
           if (err) {
             console.log(err);
