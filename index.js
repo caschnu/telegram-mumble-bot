@@ -77,6 +77,12 @@ var readCommand = function(message) {
         if (mumbleClient.ready) {
           postConnectedUsersMessage(message.chat.id);
         }
+      } else if (message.text === '/help') {
+      api.sendMessage({ chat_id: message.chat.id, text: 'All that is gold does not glitter, not all those wo wander are lost!' }, function (err, message) {
+          if (err) {
+            console.log(err);
+          }
+        });
       }
     } else {
       console.log('Message text missing');
