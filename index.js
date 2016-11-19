@@ -77,8 +77,14 @@ var readCommand = function(message) {
         if (mumbleClient.ready) {
           postConnectedUsersMessage(message.chat.id);
         }
+      } else if (message.text === '/info') {
+      api.sendMessage({ chat_id: message.chat.id, text: 'Die Mumbissbude läuft auf dem Server: norom.xyz Port: 64738)' }, function (err, message) {
+          if (err) {
+            console.log(err);
+          }
+        });
       } else if (message.text === '/help') {
-      api.sendMessage({ chat_id: message.chat.id, text: 'All that is gold does not glitter, not all those wo wander are lost!' }, function (err, message) {
+      api.sendMessage({ chat_id: message.chat.id, text: 'Der gemumble-bot verrät sowohl die Zugangsdaten zum pp-mumble als auch die Nutzernamen der verfügbaren WG-Mitglieder. Originally written by yagop, forked & modified by @willowfield and uploaded with love <3' }, function (err, message) {
           if (err) {
             console.log(err);
           }
