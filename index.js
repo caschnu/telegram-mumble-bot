@@ -87,7 +87,7 @@ var readCommand = function(message) {
 };
 
 var postConnectedUsersMessage = function(chatId) {
-  var responseText = 'There are ' + usersList.length + ' users connected:\n';
+  var responseText = 'Es sind ' + usersList.length + ' WG-Mitglieder anwesend:\n';
   usersList.forEach(function(user) {
     responseText += user.name + '\n';
   });
@@ -113,7 +113,7 @@ var onUserConnected = function(user) {
   usersList.forEach(function(user) {
     console.log(user.name + '\n');
   });
-  var messageText = user.name + ' just connected to mumble!';
+  var messageText = user.name + ' ist jetzt online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
@@ -130,7 +130,7 @@ var onUserDisconnected = function(userDisconnected) {
   usersList.forEach(function(user) {
     console.log(user.name);
   });
-  var messageText = userDisconnected.name + ' just disconnected from mumble!';
+  var messageText = userDisconnected.name + ' ist jetzt offline!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
