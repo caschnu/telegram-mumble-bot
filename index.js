@@ -125,7 +125,7 @@ var onUserConnected = function(user) {
   usersList.forEach(function(user) {
     console.log(user.name + '\n');
   });
-  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind ' + usersList.length + ' WG-Mitglieder online!';
+  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt' + usersList.length + ' WG-Mitglieder online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
@@ -142,7 +142,7 @@ var onUserDisconnected = function(userDisconnected) {
   usersList.forEach(function(user) {
     console.log(user.name);
   });
-  var messageText = userDisconnected.name + ' ist jetzt offline!';
+  var messageText = userDisconnected.name + ' ist jetzt offline!\n' + 'Es sind jetzt' + usersList.length + ' WG-Mitglieder online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
