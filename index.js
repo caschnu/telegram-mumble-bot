@@ -150,7 +150,7 @@ var onUserDisconnected = function(userDisconnected) {
   });
 };
 
-/* var onMessage = function (message, user) {
+ var onMessage = function (message, user) {
   console.log('Mumble message received');
   console.log(user.name + ' : ' + message);
   api.sendMessage({ chat_id: config.TELEGRAM_CHAT_ID, text: user.name + ' : ' + message }, function (err, message) {
@@ -158,7 +158,7 @@ var onUserDisconnected = function(userDisconnected) {
       console.log(err);
     }
   });
-}; */
+};
 
 var onError = function (error) {
   console.log('Mumble error:');
