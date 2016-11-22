@@ -121,13 +121,6 @@ var onInit = function() {
   postConnectedUsersMessage(config.TELEGRAM_CHAT_ID);
 };
 
-var channelList = [];
-var onInit = function() {
-  console.log('Mumble connection initialized');
-  channelList = channel.children();
-  postConnectedUsersMessage(config.TELEGRAM_CHAT_ID);
-};
-
 var onUserConnected = function(user) {
   console.log(user.name + ' connected');
   usersList.push(user);
@@ -135,7 +128,7 @@ var onUserConnected = function(user) {
   usersList.forEach(function(user) {
     console.log(user.name + '\n');
   });
-  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!' + channelList;
+  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!';
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
