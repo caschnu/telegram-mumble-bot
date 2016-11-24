@@ -76,12 +76,6 @@ var readCommand = function(message) {
       } else if (message.text.startsWith('/gemumble@gemumble_bot')) {
         console.log('client ready?'+mumbleClient.ready);
         if (mumbleClient.ready) {
-			var messageText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder online!';
-  		  	api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
-    			if (err) {
-      			  console.log(err);
-    		  }
-  			});
 		  	postUserGroups(message.chat.id);
         }
       } else if (message.text === '/info@gemumble_bot') {
@@ -107,7 +101,12 @@ var readCommand = function(message) {
 
 
 var postUserGroups = function(chatId){
-	responseText = searchUserGroups(mumbleClient.rootChannel);
+	var responseText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder anwesend:';
+	if(usersList.length > 1){
+		responseText += '\n';
+	}
+	responseText = searchUserGroups(responseText, mumbleClient.rootChannel);
+	
     api.sendMessage({ chat_id: chatId, text: responseText }, function (err, message) {
       if (err) {
         console.log(err);
@@ -115,11 +114,10 @@ var postUserGroups = function(chatId){
     });
 };
 
-var searchUserGroups = function(channel) {
-	var groupString = "";
+var searchUserGroups = function(groupString, channel) {
 	//TODO check if Channel is rootChannel, 2edgy4u or AFKnast. Sadly Channel Object doesn't have name property.
 	for (var i = 0, len = channel.children.length; len < i; i++){
-		getUserGroups(channel.children[i]);
+		groupString = searchUserGroups(groupString, channel.children[i]);
 	} 
 	if(channel.users.length > 0){
 		groupString += 'Gruppe:\n'; //TODO channel.name?!
