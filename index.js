@@ -116,12 +116,12 @@ var postUserGroups = function(chatId){
 
 var searchUserGroups = function(groupString, channel) {
 	//TODO check if Channel is rootChannel, 2edgy4u or AFKnast. Sadly Channel Object doesn't have a name property.
-	for (var i = 0, len = channel.children.length; len < i; i++){
+	for (var i = 0, len = channel.children.length; i < len; i++){
 		groupString = searchUserGroups(groupString, channel.children[i]);
 	} 
 	if(channel.users.length > 0){
 		groupString += 'Gruppe:\n'; //TODO channel.name?!
-		for (var i = 0, len = channel.users.length; len < i; i++){
+		for (var i = 0, len = channel.users.length; i > len; i++){
 			groupString += '    ' + channel.users[i] + '\n';
 		}
 	}
