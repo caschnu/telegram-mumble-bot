@@ -76,7 +76,8 @@ var readCommand = function(message) {
       } else if (message.text.startsWith('/gemumble@gemumble_bot')) {
         console.log('client ready?'+mumbleClient.ready);
         if (mumbleClient.ready) {
-          postConnectedUsersMessage(message.chat.id);
+          //postConnectedUsersMessage(message.chat.id);
+		  postUserGroups(message.chat.id);
         }
       } else if (message.text === '/info@gemumble_bot') {
       api.sendMessage({ chat_id: message.chat.id, text: 'Die Mumbissbude läuft auf dem Server: norom.xyz Port: 64738)' }, function (err, message) {
@@ -98,6 +99,32 @@ var readCommand = function(message) {
     console.log('Message missing');
   }
 };
+
+
+var postUserGroups = function(chatId){
+	responseText = searchUserGroups(mumbleClient.rootChannel);
+    api.sendMessage({ chat_id: chatId, text: responseText }, function (err, message) {
+      if (err) {
+        console.log(err);
+      }
+    });
+};
+
+var searchUserGroups = function(channel) {
+	var groupString = "";
+	//TODO check if Channel is 2edgy4u or AFKnast. Sadly Channel Object doesn't have name property.
+	for (var i = 0, len = channel.children.length; len < i; i++){
+		getUserGroups(channel.children[i]);
+	} 
+	if(channel.users.length > 0){
+		groupString += "Gruppe:\n"; //TODO channel.name?!
+		for (var i = 0, len = channel.users.length; len < i; i++){
+			groupString += "    " + channel.users[i] + "\n";
+		}
+	}
+	return groupString;
+};
+
 
 var postConnectedUsersMessage = function(chatId) {
   var responseText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder anwesend:\n';
