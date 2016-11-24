@@ -121,7 +121,7 @@ var searchUserGroups = function(groupString, channel) {
 	} 
 	if(channel.users.length > 0){
 		groupString += 'Gruppe:\n'; //TODO channel.name?!
-		for (var i = 0, len = channel.users.length; i > len; i++){
+		for (var i = 0, len = channel.users.length; i < len; i++){
 			groupString += '    ' + channel.users[i] + '\n';
 		}
 	}
