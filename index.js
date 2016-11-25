@@ -120,7 +120,7 @@ var searchUserGroups = function(groupString, channel) {
 		groupString = searchUserGroups(groupString, channel.children[i]);
 	} 
 	if(channel !== mumbleClient.rootChannel && channel.users.length > 0){
-		groupString += channel.name + ' Gruppe:\n'; //TODO channel.name?!
+		groupString += channel.name + ' Gruppe:\n';
 		for (var i = 0, len = channel.users.length; i < len; i++){
 			groupString += '    ' + channel.users[i].name + '\n';
 		}
