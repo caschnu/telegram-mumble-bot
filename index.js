@@ -5,7 +5,9 @@ var TelegramBot = require('telegrambot');
 var Mumble = require('mumble');
 var http = require('http');
 var fs = require('fs');
-var botname = 'gemumble_bot'
+const BOTNAME = 'gemumble_bot'
+const IDLESUBCHANNELS = '2edgy4u'
+const AFKCHANNEL = 'AFKnast'
 
 // TELEGRAM SETUP
 var api = new TelegramBot(config.TELEGRAM_TOKEN);
@@ -101,7 +103,7 @@ var readCommand = function(message) {
 
 
 var postUserGroups = function(chatId){
-	var responseText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder anwesend:';
+	var responseText = getUsersOnlineCountString(':');
 	if(usersList.length > 1){
 		responseText += '\n';
 	}
@@ -114,15 +116,30 @@ var postUserGroups = function(chatId){
     });
 };
 
+/**
+* Recursivly searches all subchannels from a given channel and appends all not empty channels with their containing users to a given groupString which is returned. 
+* The channels are traversed (and outputted) in post-order.
+*/
 var searchUserGroups = function(groupString, channel) {
-	//TODO check if Channel is rootChannel, 2edgy4u or AFKnast. Sadly Channel Object doesn't have a name property.
+	// traverse all subchannels
 	for (var i = 0, len = channel.children.length; i < len; i++){
 		groupString = searchUserGroups(groupString, channel.children[i]);
 	} 
-	if(channel !== mumbleClient.rootChannel && channel.users.length > 0){
-		groupString += channel.name + ' Gruppe:\n';
-		for (var i = 0, len = channel.users.length; i < len; i++){
-			groupString += '    ' + channel.users[i].name + '\n';
+	// the root-channel, the AFKnast-channel and empty channels will not be printed out
+	if(channel !== mumbleClient.rootChannel && channel.name !== AFKCHANNEL && channel.users.length > 0){
+		// distinguish between normal and idle channels.
+		if (channel.name !== IDLESUBCHANNELS){
+			groupString += channel.name + ':\n';
+			for (var i = 0, len = channel.users.length; i < len; i++){
+				groupString += '    ' + channel.users[i].name + '\n';
+			}
+		}
+		else{
+			// the 2edgy4u-channels will not show up as own channels.
+			// users in the 2edgy4u channels will only appear as '(username)' in the parent channel
+			for (var i = 0, len = channel.users.length; i < len; i++){
+				groupString += '    (' + channel.users[i].name + ')\n';
+			}
 		}
 	}
 	return groupString;
@@ -130,9 +147,9 @@ var searchUserGroups = function(groupString, channel) {
 
 
 var postConnectedUsersMessage = function(chatId) {
-  var responseText = 'Es sind ' + (usersList.length - 1) + ' WG-Mitglieder anwesend:\n';
+  var responseText = getUsersOnlineCountString(':\n');
   usersList.forEach(function(user) {
-	if (user.name !== botname) {
+	if (user.name !== BOTNAME) {
       responseText += user.name + '\n';
     }
   });
@@ -141,6 +158,13 @@ var postConnectedUsersMessage = function(chatId) {
       console.log(err);
     }
   });
+};
+
+/**
+* Just gives a string of the format 'Es sind jetzt x WG-Mitglieder online' with x the number of users online not including this bot. The text is appended with a given endOfLine string, which can be a punctuation character or a CRLF.
+*/
+var getUsersOnlineCountString = function(var endOfLine){
+	return 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online' + endOfLine;
 };
 
 // MUMBLE LISTENER FUNCTIONS
@@ -158,7 +182,7 @@ var onUserConnected = function(user) {
   usersList.forEach(function(user) {
     console.log(user.name + '\n');
   });
-  var messageText = user.name + ' ist jetzt online!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!';
+  var messageText = user.name + ' ist jetzt online!\n' + getUsersOnlineCountString('!');
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
@@ -175,7 +199,7 @@ var onUserDisconnected = function(userDisconnected) {
   usersList.forEach(function(user) {
     console.log(user.name);
   });
-  var messageText = userDisconnected.name + ' ist jetzt offline!\n' + 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online!';
+  var messageText = userDisconnected.name + ' ist jetzt offline!\n' + getUsersOnlineCountString('!');
   api.sendMessage({ chat_id: config.TELEGRAM_CHANNEL_ID, text: messageText }, function (err, message) {
     if (err) {
       console.log(err);
