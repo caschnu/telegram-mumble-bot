@@ -164,7 +164,16 @@ var postConnectedUsersMessage = function(chatId) {
 * Just gives a string of the format 'Es sind jetzt x WG-Mitglieder online' with x the number of users online not including this bot. The text is appended with a given endOfLine string, which can be a punctuation character or a CRLF.
 */
 var getUsersOnlineCountString = function(endOfLine){
-	return 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online' + endOfLine;
+	if(usersList.length === 1){
+		return 'Es ist gerade kein WG-Mitglied online.';
+	} 
+	else if (usersList.length === 2){
+		return 'Es ist gerade nur ein WG-Mitglied  #ForEverAlone online' + endOfLine;
+	}
+	else{
+		return 'Es sind jetzt ' + (usersList.length - 1) + ' WG-Mitglieder online' + endOfLine;
+	}
+	
 };
 
 // MUMBLE LISTENER FUNCTIONS
