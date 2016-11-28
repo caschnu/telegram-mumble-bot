@@ -118,13 +118,9 @@ var postUserGroups = function(chatId){
 
 /**
 * Recursivly searches all subchannels from a given channel and appends all not empty channels with their containing users to a given groupString which is returned. 
-* The channels are traversed (and outputted) in post-order.
+* The channels are traversed (and outputted) in pre-order.
 */
 var searchUserGroups = function(groupString, channel) {
-	// traverse all subchannels
-	for (var i = 0, len = channel.children.length; i < len; i++){
-		groupString = searchUserGroups(groupString, channel.children[i]);
-	} 
 	// the root-channel, the AFKnast-channel and empty channels will not be printed out
 	if(channel !== mumbleClient.rootChannel && channel.name !== AFKCHANNEL && channel.users.length > 0){
 		// distinguish between normal and idle channels.
@@ -142,6 +138,10 @@ var searchUserGroups = function(groupString, channel) {
 			}
 		}
 	}
+	// traverse all subchannels
+	for (var i = 0, len = channel.children.length; i < len; i++){
+		groupString = searchUserGroups(groupString, channel.children[i]);
+	} 
 	return groupString;
 };
 
