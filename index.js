@@ -5,9 +5,10 @@ var TelegramBot = require('telegrambot');
 var Mumble = require('mumble');
 var http = require('http');
 var fs = require('fs');
-const BOTNAME = 'gemumble_bot'
-const IDLESUBCHANNELS = '2edgy4u'
-const AFKCHANNEL = 'AFKnast'
+const BOTNAME = 'gemumble_bot';
+const IDLESUBCHANNELS = '2edgy4u';
+const AFKCHANNEL = 'AFKnast';
+var idleCount = 0;
 
 // TELEGRAM SETUP
 var api = new TelegramBot(config.TELEGRAM_TOKEN);
@@ -107,7 +108,14 @@ var postUserGroups = function(chatId){
 	if(usersList.length > 1){
 		responseText += '\n';
 	}
+	idleCount = 0;
 	responseText = searchUserGroups(responseText, mumbleClient.rootChannel);
+	if(idleCount === 1){
+		responseText += 'Es lungert eine Person afk herum.';
+	}
+	else if(idleCount > 1) {
+		responseText += 'Es lungern ' + idleCount + ' Personen afk herum.';
+	}
 	
     api.sendMessage({ chat_id: chatId, text: responseText }, function (err, message) {
       if (err) {
@@ -135,6 +143,13 @@ var searchUserGroups = function(groupString, channel) {
 			// users in the 2edgy4u channels will only appear as '(username)' in the parent channel
 			for (var i = 0, len = channel.users.length; i < len; i++){
 				groupString += '    (' + channel.users[i].name + ')\n';
+			}
+		}
+	}
+	else {
+		for (var i = 0, len = channel.users.length; i < len; i++){
+			if(channel.users[i].name !== BOTNAME){
+				idleCount += 1;
 			}
 		}
 	}
