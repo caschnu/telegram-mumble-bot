@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/jshint/bin/jshint index.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "express": "^4.13.4",
     "mumble": "^0.3.11",
     "telegrambot": "0.0.12"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.4"
   }
 }
