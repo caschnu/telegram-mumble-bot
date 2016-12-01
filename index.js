@@ -141,21 +141,21 @@ var searchUserGroups = function(groupString, channel) {
 		else{
 			// the 2edgy4u-channels will not show up as own channels.
 			// users in the 2edgy4u channels will only appear as '(username)' in the parent channel
-			for (var i = 0, len = channel.users.length; i < len; i++){
-				groupString += '    (' + channel.users[i].name + ')\n';
+			for (var j = 0, len1 = channel.users.length; j < len1; j++){
+				groupString += '    (' + channel.users[j].name + ')\n';
 			}
 		}
 	}
 	else {
-		for (var i = 0, len = channel.users.length; i < len; i++){
-			if(channel.users[i].name !== BOTNAME){
+		for (var k = 0, len2 = channel.users.length; k < len2; k++){
+			if(channel.users[k].name !== BOTNAME){
 				idleCount += 1;
 			}
 		}
 	}
 	// traverse all subchannels
-	for (var i = 0, len = channel.children.length; i < len; i++){
-		groupString = searchUserGroups(groupString, channel.children[i]);
+	for (var l = 0, len3 = channel.children.length; l < len3; l++){
+		groupString = searchUserGroups(groupString, channel.children[l]);
 	} 
 	return groupString;
 };
